@@ -14,37 +14,37 @@ class PlayGame
     @computer = ComputerPlayer.new
   end
 
-
   def start_game
     rules_UI
     @computer.store_code(@computer.generate_code)
-    puts "Debug: #{@computer.code}" #test
+    puts "Debug cOMP CODE: #{@computer.code}" # test
   end
 
   def player_turns
-      guess_no = current_guess_no #tracked in HumanPlayer
-      until guess_no == MAX_GUESSES || pattern_match? == true do
-        @human.make_guess
-        puts "Player guessed: #{@human.make_guess}." #debug
-        @rules.pattern_match?(@computer.code, @human.make.guess)
-      end
+    until @human.current_guess_no == GameSettings::MAX_GUESSES || pattern_match?(@computer.code, @human.guess) == true
+      valid_colors_UI # Displayable
+      @human.make_guess
+     # @human.store_current_guess_no(@human.current_guess_no)
+      puts "Debug Player guessed: #{@human.guess}." # debug
+      pattern_match?(@computer.code, @human.guess)
+    end
   end
 
   def end_game
-    if @rules.pattern_match == true
+    if pattern_match?(@computer.code, @human.guess) == true
       win_UI
-    else lose_UI 
+    else
+      lose_UI
     end
-    reset_board #Board Class
+    reset_board # Board Class
   end
 
-  #def play_new_game
-   # start_game
-    #player_turns
-    #end_game
-  #end
-
+  def play_new_game
+    start_game
+    player_turns
+    end_game
+  end
 end
 
 new_game = PlayGame.new
-new_game.start_game #debug
+new_game.play_new_game # debug
