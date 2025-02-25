@@ -3,16 +3,31 @@
 
 require_relative 'game_settings'
 require_relative 'colorable'
+require 'rainbow'
 
 module Displayable
+  include Colorable
+
+  def generate_key_pegs(guess, code)
+    key_peg_bolean = guess.map.with_index { |val, i| val == code[i] }
+    color_array = key_peg_bolean.map! { |value| value == true ? :darkred : :white }
+    code_color(color_array)
+  end
+
+  def generate_player_pegs(guess)
+    code_color(guess)
+  end
+
+  def display_board(current_guess_no, guess, code)
+      puts "#{current_guess_no}  |  #{generate_player_pegs(guess)}  |  #{generate_key_pegs(guess, code)}"
+  end
 
   def rules_UI
-    puts "You have 8 guesses to crack the code. Grey pegs mean you got the color and position right, white means you didn't."
+    puts "You have 8 guesses to crack the code. " + Rainbow('Dark red').bold.darkred + " pegs mean you got the color and position right, " + Rainbow('white').bold.white + " means you didn't."
   end
-  
+
   def valid_colors_UI
-    valid_colors_string = GameSettings::VALID_COLORS.join(", ")
-    puts "Valid colours: #{valid_colors_string}"
+    puts "Valid colours: " + valid_colors_colors(GameSettings::VALID_COLORS)
   end
 
   def win_UI
@@ -23,3 +38,5 @@ module Displayable
     puts "You'd never be hired by the secret services. Do better next time."
   end
 end
+
+
