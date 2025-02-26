@@ -7,14 +7,15 @@ require_relative 'game_settings'
 class ComputerPlayer
   attr_accessor :code
 
-  def initialize(_code)
-    @code = generate_code
+  def initialize
+    @code = []
   end
 
   def generate_code
     GameSettings::VALID_COLORS.sample(GameSettings::CODE_LENGTH)
   end
-end
 
-computer = ComputerPlayer.new(GameSettings::VALID_COLORS)
-puts computer.code
+  def store_code(code)
+    @code = code
+  end
+end

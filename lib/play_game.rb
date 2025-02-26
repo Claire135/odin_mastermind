@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 # Controls game flow
 # controls player creation
 require_relative 'displayable'
+require_relative 'board'
 require_relative 'computer_player'
 require_relative 'human_player'
 require_relative 'rules'
@@ -12,6 +15,7 @@ class PlayGame
   def initialize
     @human = HumanPlayer.new
     @computer = ComputerPlayer.new
+    @board = Board.new(@human, @computer)
   end
 
   def start_game
@@ -22,11 +26,11 @@ class PlayGame
 
   def player_turns
     until @human.current_guess_no == GameSettings::MAX_GUESSES || pattern_match?(@computer.code, @human.guess) == true
-      valid_colors_UI # Displayable
+      valid_colors_UI
       @human.make_guess
-     # @human.store_current_guess_no(@human.current_guess_no)
-      puts "Debug Player guessed: #{@human.guess}." # debug
-      pattern_match?(@computer.code, @human.guess)
+      @board.create_display_array(@human.guess, @computer.code, @human.current_guess_no)
+      puts @board.historic_pegs
+      display_board(@human.current_guess_no, @human.guess, @computer.code)
     end
   end
 
@@ -36,7 +40,6 @@ class PlayGame
     else
       lose_UI
     end
-    reset_board # Board Class
   end
 
   def play_new_game
@@ -47,4 +50,4 @@ class PlayGame
 end
 
 new_game = PlayGame.new
-new_game.play_new_game # debug
+new_game.play_new_game
