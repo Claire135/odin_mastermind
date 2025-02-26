@@ -21,16 +21,13 @@ class PlayGame
   def start_game
     rules_UI
     @computer.store_code(@computer.generate_code)
-    puts "Debug cOMP CODE: #{@computer.code}" # test
   end
 
   def player_turns
     until @human.current_guess_no == GameSettings::MAX_GUESSES || pattern_match?(@computer.code, @human.guess) == true
       valid_colors_UI
       @human.make_guess
-      p "guess: #{@human.guess}"
       @board.create_display_array(@human.guess, @computer.code, @human.current_guess_no)
-      p @board.historic_pegs
       display_board(@board.historic_pegs)
     end
   end
