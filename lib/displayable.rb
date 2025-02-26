@@ -10,18 +10,16 @@ require 'rainbow'
 module Displayable
   include Colorable
 
-  def generate_key_pegs(guess, code)
-    key_peg_bolean = guess.map.with_index { |val, i| val == code[i] }
-    color_array = key_peg_bolean.map! { |value| value == true ? :darkred : :white }
-    code_color(color_array)
+  def generate_key_pegs(code_array)
+    code_color(code_array)
   end
 
   def generate_player_pegs(guess)
     code_color(guess)
   end
 
-  def display_board(current_guess_no, guess, code)
-    puts " #{current_guess_no} | #{generate_player_pegs(guess)} | #{generate_key_pegs(guess, code)}"
+  def display_board(array)
+    array.each { |entry| puts "#{entry[0]} | #{generate_player_pegs(entry[1])} | #{generate_key_pegs(entry[2])}" }
   end
 
   def rules_UI

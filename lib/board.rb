@@ -14,11 +14,13 @@ class Board
     @computer = computer
   end
 
-  def create_display_array(guess, code, current_guess_no)
-    current_player_pegs = generate_player_pegs(guess)
-    current_key_pegs = generate_key_pegs(guess, code)
+  def key_peg_boolean(guess, code)
+    key_peg_boolean = guess.map.with_index { |val, i| val == code[i] }
+    key_peg_boolean.map! { |value| value == true ? :darkred : :white }
+  end
 
-    current_peg_array = [current_guess_no, current_player_pegs, current_key_pegs]
+  def create_display_array(guess, code, current_guess_no)
+    current_peg_array = [current_guess_no, guess, key_peg_boolean(guess, code)]
     @historic_pegs << current_peg_array
     puts "debug #{@historic_pegs}"
   end

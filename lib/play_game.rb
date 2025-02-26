@@ -28,9 +28,10 @@ class PlayGame
     until @human.current_guess_no == GameSettings::MAX_GUESSES || pattern_match?(@computer.code, @human.guess) == true
       valid_colors_UI
       @human.make_guess
+      p "guess: #{@human.guess}"
       @board.create_display_array(@human.guess, @computer.code, @human.current_guess_no)
-      puts @board.historic_pegs
-      display_board(@human.current_guess_no, @human.guess, @computer.code)
+      p @board.historic_pegs
+      display_board(@board.historic_pegs)
     end
   end
 
