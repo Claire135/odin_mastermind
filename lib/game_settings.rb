@@ -6,5 +6,5 @@
 class GameSettings
   CODE_LENGTH = 4
   MAX_GUESSES = 8
-  VALID_COLORS = %i[red green orange blue purple yellow].freezemain
+  VALID_COLORS = %i[red green orange blue purple yellow].freeze
 end

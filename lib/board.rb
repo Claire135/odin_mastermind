@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 # Controls the state of the board
+require_relative 'rules'
 require_relative 'displayable'
 
 class Board
   attr_accessor :historic_pegs
 
   include Displayable
+  include Rules
 
   def initialize(human, computer)
     @historic_pegs = []
@@ -20,9 +22,8 @@ class Board
   end
 
   def create_display_array(guess, code, current_guess_no)
-    current_peg_array = [current_guess_no, guess, key_peg_boolean(guess, code)]
+    current_peg_array = [current_guess_no, guess, key_peg_match(guess, code)]
     @historic_pegs << current_peg_array
-    puts "debug #{@historic_pegs}"
   end
 
   def reset_board
