@@ -25,9 +25,4 @@ class Board
     current_peg_array = [current_guess_no, guess, key_peg_match(guess, code)]
     @historic_pegs << current_peg_array
   end
-
-  def reset_board
-    @historic_pegs = clear
-    Board.new
-  end
 end

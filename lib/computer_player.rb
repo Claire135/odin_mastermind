@@ -4,38 +4,55 @@
 # Stores code and computer guess depending on mode
 # Generates guesses in Computer code breaker mode
 
-require_relative 'rules'
-require_relative 'game_settings'
-require_relative 'player'
-require_relative 'computer_guess_logic'
-
 class ComputerPlayer < Player
-  attr_accessor :locked_pegs
+  attr_accessor :locked_pegs, :available_colors, :guess
 
   include Rules
-  include ComputerGuessLogic
 
   def initialize
     super()
-    @available_colors = GameSettings::VALID_COLORS.dup
-    @locked_pegs = Array.new(4)
-    @guess = guess
+    @available_colors = %i[red green orange blue purple yellow]
+    @guess = generate_guess
+    @locked_pegs = [nil, nil, nil, nil]
   end
-  
+
+  def generate_guess
+    Array.new(4) { @available_colors.sample }
+  end
+
+  def get_feedback(code, guess)
+    guess.map.with_index { |color, i| color == code[i] ? :darkred : :white }
+  end
+
+  def assign_locked_pegs(code)
+    get_feedback(code, @guess).each_with_index do |feedback, i|
+      @locked_pegs[i] = @guess[i] if feedback == :darkred
+    end
+  end
+
+  def remove_color_from_available_colors(code)
+    @guess.each_with_index do |color, i|
+      @available_colors.delete(color) if color == code[i]
+    end
+  end
+
+  def white_pegs_guess_again
+    @guess = @guess.map.with_index do |_color, i|
+      @locked_pegs[i] || @available_colors.sample
+    end
+  end
+
+  def make_guess(code)
+    assign_locked_pegs(code)
+    remove_color_from_available_colors(code)
+    white_pegs_guess_again
+  end
+
   def generate_code
     GameSettings::VALID_COLORS.sample(GameSettings::CODE_LENGTH)
   end
 
-  def make_guess(code)
-    assign_locked_pegs(code, @guess, @locked_pegs)
-    remove_color_from_available_colors(@guess)
-    white_pegs_guess_again(@guess, @locked_pegs, @available_colors)
-    @current_guess_no += 1
-  end
-  
   def store_code(code)
     @code = code
   end
-
 end
-

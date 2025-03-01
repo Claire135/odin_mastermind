@@ -4,8 +4,6 @@
 # Generates key peg display
 # Controls UI
 
-require_relative 'game_settings'
-require_relative 'colorable'
 require 'rainbow'
 
 module Displayable
@@ -23,9 +21,10 @@ module Displayable
     array.each { |entry| puts "#{entry[0]} | #{generate_player_pegs(entry[1])} | #{generate_key_pegs(entry[2])}" }
   end
 
-  def display_player_code(code)
-    code_color(code)
-    puts ' '
+  def display_secret_code(code)
+    puts '---------------------- '
+    puts "C | #{generate_player_pegs(code)}"
+    puts ""
   end
 
   def rules_ui(player)
@@ -44,11 +43,22 @@ module Displayable
     puts "You'd never be hired by the secret services. Do better next time."
   end
 
-  def computer_win_ui
-    puts "Computer won in #{@current_guess_no} guesses!"
+  def computer_win_ui(guess_no)
+    puts "Computer won in #{guess_no} guesses!"
   end
 
   def computer_lose_ui
     puts "The computer couldn't even crack your code. Well done you!"
+  end
+
+  def play_again_prompt
+    puts "Do you want to play again? (y/n)"
+    input = gets.chomp.downcase
+    if input == "y"
+      GameLauncher.start
+    else
+      puts "Thanks for playing!"
+      exit
+    end
   end
 end

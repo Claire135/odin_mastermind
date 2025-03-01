@@ -1,9 +1,5 @@
-require_relative 'lib/game_settings'
-require_relative 'lib/displayable'
-require_relative 'lib/computer_player'
-require_relative 'lib/human_player'
-require_relative 'lib/colorable'
-require_relative 'lib/positionable'
-require_relative 'lib/board'
-require_relative 'lib/rules'
-require_relative 'lib/play_game'
+# frozen_string_literal: true
+
+require_relative 'lib/game_launcher'
+
+GameLauncher.start
