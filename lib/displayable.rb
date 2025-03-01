@@ -24,7 +24,7 @@ module Displayable
   def display_secret_code(code)
     puts '---------------------- '
     puts "C | #{generate_player_pegs(code)}"
-    puts ""
+    puts ''
   end
 
   def rules_ui(player)
@@ -52,12 +52,12 @@ module Displayable
   end
 
   def play_again_prompt
-    puts "Do you want to play again? (y/n)"
+    puts 'Do you want to play again? (y/n)'
     input = gets.chomp.downcase
-    if input == "y"
+    if input == 'y'
       GameLauncher.start
     else
-      puts "Thanks for playing!"
+      puts 'Thanks for playing!'
       exit
     end
   end

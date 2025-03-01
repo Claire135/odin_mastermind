@@ -8,7 +8,7 @@ class HumanPlayer < Player
     loop do
       display_guess_prompt
       process_guess
-      validate_input
+      validate_input(@guess)
       increment_guess_no
       break
     rescue StandardError => e
@@ -18,13 +18,14 @@ class HumanPlayer < Player
   end
 
   def set_code
-    #  loop do
-    set_code_prompt
-    # validate_input
-    # rescue StandardError => e
-    # puts e.message
-    #   retry
-    #  end
+    loop do
+      set_code_prompt
+      validate_input(@code)
+      break
+    rescue StandardError => e
+      puts e.message
+      retry
+    end
   end
 
   def display_guess_prompt
@@ -43,10 +44,10 @@ class HumanPlayer < Player
     @code = input.split.map(&:to_sym)
   end
 
-  def validate_input
-    raise StandardError, 'Please enter 4 valid colors.' if @guess.size != 4
+  def validate_input(input)
+    raise StandardError, 'Please enter 4 valid colors.' if input.size != 4
 
-    invalid_colors = @guess - GameSettings::VALID_COLORS
+    invalid_colors = input - GameSettings::VALID_COLORS
     raise StandardError, 'Please enter 4 valid colors with spaces.' unless invalid_colors.empty?
   end
 end
